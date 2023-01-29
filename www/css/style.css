@@ -43,6 +43,8 @@ iframe {
     border: none;
 
     overflow: hidden;
+
+    filter: saturate(1.7);
 }
 #swoosh {
     position: absolute;

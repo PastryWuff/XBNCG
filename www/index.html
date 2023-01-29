@@ -22,10 +22,16 @@
     <body>
         <div id="error"></div>
         <video id="bugLogo" autoplay muted playsinline></video>
-        <iframe id="gfx" src="template/template.html"></iframe>
+        <iframe id="gfx" src="template/template.html" style="margin-left: 50px;"></iframe>
         <script src="js/socket.io.min.js"></script>
         <script>
             var socket = io();
+
+            var logoLIVE;
+            var logoLIVEInUse;
+            var logoLIVESwitch = 0;
+
+            var animateLiveEvery = 300000;
 
             socket.on("connect", (error) => {
                 document.getElementById("error").style.display = "none";
@@ -56,20 +62,57 @@
                 document.getElementById("error").style.background = "red";
             });
             socket.on("showCG", () => {
-                document.getElementById("bugLogo").src = "template/logos/xanaintro.webm";
+                document.getElementById("bugLogo").src = "template/logos/XANA Logo Intro.webm";
                 document.getElementById("gfx").contentWindow.play();
+                setTimeout(() => {
+                    document.getElementById("bugLogo").setAttribute("poster","template/logos/poster.png");
+                },2000);
+                logoLIVE = setInterval(() => {
+                    if(logoLIVESwitch == 0) {
+                        // Switch logo to LIVE
+                        document.getElementById("bugLogo").src = "template/logos/XANA Logo LIVE.webm";
+                        setTimeout(() => {
+                            document.getElementById("bugLogo").removeAttribute("poster");
+                        },2000);
+                        logoLIVEInUse = 1;
+                        logoLIVESwitch = 1;
+                    } else {
+                        // Switch logo to Pulsate
+                        document.getElementById("bugLogo").src = "template/logos/XANA Logo Pulse.webm";
+                        setTimeout(() => {
+                            document.getElementById("bugLogo").setAttribute("poster","template/logos/poster.png");
+                        },2000);
+                        logoLIVESwitch = 0;
+                    }
+                },animateLiveEvery);
             });
             socket.on("toggleCG", () => {
                 document.getElementById("gfx").contentWindow.next();
             });
             socket.on("hideCG", () => {
-                setTimeout(() => { document.getElementById("bugLogo").src = "template/logos/xanaoutro2.webm" },1500);
+                setTimeout(() => { document.getElementById("bugLogo").src = "template/logos/XANA Logo Outro 02.webm" },1500);
                 document.getElementById("gfx").contentWindow.stop();
+                setTimeout(() => {
+                    document.getElementById("bugLogo").removeAttribute("poster");
+                },2000);
+                clearInterval(logoLIVE);
             });
             socket.on("killCG", () => {
                 document.getElementById("gfx").contentWindow.location.reload();
                 document.getElementById("bugLogo").src = "";
+                document.getElementById("bugLogo").removeAttribute("poster");
+                clearInterval(logoLIVE);
             });
+
+            document.getElementById("bugLogo").addEventListener("ended", () => {
+                if(logoLIVEInUse == 1) {
+                    document.getElementById("bugLogo").src = "template/logos/XANA Logo Intro.webm";
+                    setTimeout(() => {
+                        document.getElementById("bugLogo").setAttribute("poster","template/logos/poster.png");
+                    },2000);
+                    logoLIVEInUse = 0;
+                }
+            })
         </script>
     </body>
 </html>

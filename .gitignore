@@ -1,2 +1,6 @@
 node_modules
 out
+.DS_Store
+www/.DS_Store
+www/template/logos/.DS_Store
+www/template/.DS_Store
