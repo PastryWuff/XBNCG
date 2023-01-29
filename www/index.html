@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+    <!--
+                             .
+                            / V\
+                        / `  /
+                        <<   |      bark bark woof.
+                        /    |
+                    /      |        this was all custom built
+                    /        |      by Doughnut :3
+                /    \  \ /         
+                (      ) | |        doughnut.dev/socials/
+        ________|   _/_  | |
+        <__________\______)\__)
+    -->
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>XBNCG TX Projector</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <div id="error"></div>
+        <video id="bugLogo" autoplay muted playsinline></video>
+        <iframe id="gfx" src="template/template.html"></iframe>
+        <script src="js/socket.io.min.js"></script>
+        <script>
+            var socket = io();
+
+            socket.on("connect", (error) => {
+                document.getElementById("error").style.display = "none";
+                document.getElementById("error").style.background = "red";
+            });
+            socket.on("disconnect", (error) => {
+                document.getElementById("error").style.display = "block";
+                document.getElementById("error").style.background = "red";
+            });
+            socket.on("error", (error) => {
+                document.getElementById("error").style.display = "block";
+                document.getElementById("error").style.background = "red";
+            });
+            socket.on("reconnect", (error) => {
+                document.getElementById("error").style.display = "none";
+                document.getElementById("error").style.background = "red";
+            });
+            socket.on("reconnect_attempt", (error) => {
+                document.getElementById("error").style.display = "block";
+                document.getElementById("error").style.background = "yellow";
+            });
+            socket.on("reconnect_error", (error) => {
+                document.getElementById("error").style.display = "block";
+                document.getElementById("error").style.background = "red";
+            });
+            socket.on("reconnect_failed", (error) => {
+                document.getElementById("error").style.display = "block";
+                document.getElementById("error").style.background = "red";
+            });
+            socket.on("showCG", () => {
+                document.getElementById("bugLogo").src = "template/logos/xanaintro.webm";
+                document.getElementById("gfx").contentWindow.play();
+            });
+            socket.on("toggleCG", () => {
+                document.getElementById("gfx").contentWindow.next();
+            });
+            socket.on("hideCG", () => {
+                setTimeout(() => { document.getElementById("bugLogo").src = "template/logos/xanaoutro2.webm" },1500);
+                document.getElementById("gfx").contentWindow.stop();
+            });
+            socket.on("killCG", () => {
+                document.getElementById("gfx").contentWindow.location.reload();
+                document.getElementById("bugLogo").src = "";
+            });
+        </script>
+    </body>
+</html>

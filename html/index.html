@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+    <!--
+                             .
+                            / V\
+                        / `  /
+                        <<   |      bark bark woof.
+                        /    |
+                    /      |        this was all custom built
+                    /        |      by Doughnut :3
+                /    \  \ /         
+                (      ) | |        doughnut.dev/socials/
+        ________|   _/_  | |
+        <__________\______)\__)
+    -->
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>XBNCG Control Panel</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body style="overflow: hidden">
+        <div class="splash d-flex flex-column justify-content-center align-items-center vw-100 vh-100" style="opacity: 0;">
+            <h1 class="logo display-1 bebas text-center text-light">XBN<span style='color: rgb(0,204,0);'>CG</span></h1>
+            <small class="text-light">made with 💖 by <a class="link-light" href="https://doughnut.dev/socials/">doughnut</a></small>
+        </div>
+        <div class="maincontent" style="opacity: 0;">
+            <h1 class="logo pt-4 display-1 bebas text-center text-light">XBN<span style='color: rgb(0,204,0);'>CG</span></h1>
+            <div class="d-flex flex-column justify-content-center align-items-center p-4 pt-2 vw-100" style="height: calc(600px - 85px);">
+                <div class="w-100 flex-fill">
+                    <p class="text-light text-center w-100 bg-dark py-2 rounded-3">OBS Projector running on <a class="link-primary" id="web_btn">127.0.0.1:8000</a></p>
+                    <p class="text-light bebas fs-1 mb-0">OSC Control</p>
+                    <p class="text-light w-100 mb-2">The OSC Server is running on <b>port 3000</b>.</p>
+                    <p id="showCG" class="text-light w-100 mb-1 rounded-pill" style="background: rgba(64,64,64,0)"><span class="badge bg-success rounded-pill me-2">Show CG</span><span class='mono'>/xbncg/show</span></p>
+                    <p id="hideCG" class="text-light w-100 mb-1 rounded-pill" style="background: rgba(64,64,64,0)"><span class="badge bg-danger rounded-pill me-2">Hide CG</span><span class='mono'>/xbncg/hide</span></p>
+                    <p id="miniCG" class="text-light w-100 mb-1 rounded-pill" style="background: rgba(64,64,64,0)"><span class="badge bg-primary rounded-pill me-2">Toggle Mini CG</span><span class='mono'>/xbncg/toggle</span></p>
+                    <p id="killCG" class="text-light w-100 mb-0 rounded-pill" style="background: rgba(64,64,64,0)"><span class="badge bg-danger rounded-pill me-2">KILL CG</span><span class='mono'>/xbncg/kill</span></p>
+                </div>
+                <div class="w-100">
+                    <p class="text-light bebas fs-1 mb-0">Basic Visibility Controls</p>
+                    <div class="row mb-2 g-2">
+                        <div class="col">
+                            <button id="btn-show" class="btn btn-outline-light w-100 p-4">Show</button>
+                        </div>
+                        <div class="col">
+                            <button id="btn-toggle" class="btn btn-outline-light w-100 p-4">Minimise</button>
+                        </div>
+                        <div class="col">
+                            <button id="btn-hide" class="btn btn-outline-light w-100 p-4">Hide</button>
+                        </div>
+                    </div>
+                    <button id="btn-kill" class="btn btn-danger w-100 mb-4 fw-bold">KILL ALL CG</button>
+                    <div class="row mb-0 g-2">
+                        <div class="col">
+                            <button data-bs-toggle="modal" data-bs-target="#modalChoice" class="btn btn-outline-danger w-100">Exit</button>
+                        </div>
+                        <div class="col">
+                            <button id="btn-hideToTray" class="btn btn-outline-light w-100">Run in Background</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" tabindex="-1" role="dialog" id="modalChoice" style="backdrop-filter: blur(10px); background: rgba(48,0,0,0.25);">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content rounded-3 shadow">
+                        <div class="modal-body p-4 text-center">
+                            <h5 class="mb-0">Are you sure you wish to exit, Paradox?</h5>
+                        </div>
+                        <div class="modal-footer flex-nowrap p-0">
+                            <button id="btn-exit" type="button" class="btn btn-lg btn-link link-danger fs-6 text-decoration-none col-6 m-0 rounded-0 border-end"><strong>Yes, I have finished!</strong></button>
+                            <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">No, back to safety!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+        <script src="js/socket.io.min.js"></script>
+        <script src="js/TweenMax.js"></script>
+        <script src="js/TimelineMax.js"></script>
+        <script>
+            var socket = io("ws://127.0.0.1:8000");
+            var tl = new TimelineMax();
+
+            window.addEventListener("load", () => {
+                tl.to(".splash",0.3,{ opacity: 1 });
+                tl.to(".splash",0.3,{ opacity: 0, onComplete: () => {
+                    document.getElementsByClassName("splash")[0].remove();
+                } },"+=1")
+                tl.to(".maincontent",0.3,{ opacity: 1 });
+            })
+
+            document.getElementById("btn-show").addEventListener("click", () => {
+                socket.emit("sendCommand","/xbncg/show");
+            })
+            document.getElementById("btn-toggle").addEventListener("click", () => {
+                socket.emit("sendCommand","/xbncg/toggle");
+            })
+            document.getElementById("btn-hide").addEventListener("click", () => {
+                socket.emit("sendCommand","/xbncg/hide");
+            })
+            document.getElementById("btn-kill").addEventListener("click", () => {
+                socket.emit("sendCommand","/xbncg/kill");
+            })
+
+            socket.on("showCG",() => {
+                tl.to("#showCG",0.25,{ background: "rgba(64,64,64,1)" });
+                tl.to("#showCG",0.25,{ background: "rgba(64,64,64,0)" },"+=0.1");
+            })
+            socket.on("hideCG",() => {
+                tl.to("#hideCG",0.25,{ background: "rgba(64,64,64,1)" });
+                tl.to("#hideCG",0.25,{ background: "rgba(64,64,64,0)" },"+=0.1");
+            })
+            socket.on("toggleCG",() => {
+                tl.to("#miniCG",0.25,{ background: "rgba(64,64,64,1)" });
+                tl.to("#miniCG",0.25,{ background: "rgba(64,64,64,0)" },"+=0.1");
+            })
+            socket.on("killCG",() => {
+                tl.to("#killCG",0.25,{ background: "rgba(64,64,64,1)" });
+                tl.to("#killCG",0.25,{ background: "rgba(64,64,64,0)" },"+=0.1");
+            })
+        </script>
+    </body>
+</html>

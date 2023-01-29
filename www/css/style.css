@@ -1,0 +1,83 @@
+body {
+    margin: 0px;
+    padding: 0px;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: transparent;
+
+    overflow: hidden;
+}
+iframe {
+    position: absolute;
+    z-index: 5;
+    margin: 0px;
+    padding: 0px;
+
+    width: 100vw;
+    height: 100vh;
+
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+
+    background: transparent;
+
+    border: none;
+
+    overflow: hidden;
+}
+#bugLogo {
+    position: absolute;
+    z-index: 10;
+    margin: 0px;
+    padding: 0px;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: transparent;
+
+    border: none;
+
+    overflow: hidden;
+}
+#swoosh {
+    position: absolute;
+    z-index: 0;
+    margin: 0px;
+    padding: 0px;
+
+    width: 100vw;
+    height: auto;
+
+    bottom: 0px;
+
+    background: transparent;
+
+    border: none;
+
+    overflow: hidden;
+
+    filter: brightness(1.2);
+}
+#error {
+    position: absolute;
+    z-index: 100;
+    margin: 0px;
+    padding: 0px;
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 8px;
+
+    background: yellow;
+
+    top: 54px;
+    right: 96px;
+
+    display: block;
+}
