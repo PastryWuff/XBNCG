@@ -21,11 +21,16 @@
     </head>
     <body>
         <div id="error"></div>
+        <video id="swooshFast" autoplay muted playsinline></video>
+        <video id="swooshLoop" autoplay muted playsinline loop></video>
         <video id="bugLogo" autoplay muted playsinline></video>
         <iframe id="gfx" src="template/template.html" style="margin-left: 50px;"></iframe>
         <script src="js/socket.io.min.js"></script>
+        <script src="js/TweenMax.js"></script>
+        <script src="js/TimelineMax.js"></script>
         <script>
             var socket = io();
+            var tl = new TimelineMax();
 
             var logoLIVE;
             var logoLIVEInUse;
@@ -63,7 +68,10 @@
             });
             socket.on("showCG", () => {
                 document.getElementById("bugLogo").src = "template/logos/XANA Logo Intro.webm";
+                setTimeout(() => { document.getElementById("swooshFast").src = "template/logos/Fast Green Swoosh.webm"; },500);
+                document.getElementById("swooshLoop").src = "template/logos/Slow Green Swoosh Loop.webm";
                 document.getElementById("gfx").contentWindow.play();
+                tl.to("#swooshLoop",0.5,{ opacity: 1 },"+=1");
                 setTimeout(() => {
                     document.getElementById("bugLogo").setAttribute("poster","template/logos/poster.png");
                 },2000);
@@ -92,6 +100,8 @@
             socket.on("hideCG", () => {
                 setTimeout(() => { document.getElementById("bugLogo").src = "template/logos/XANA Logo Outro 02.webm" },1500);
                 document.getElementById("gfx").contentWindow.stop();
+                setTimeout(() => { document.getElementById("swooshFast").src = "template/logos/Fast Green Swoosh.webm"; },1000);
+                tl.to("#swooshLoop",0.5,{ opacity: 0 },"+=1.5");
                 setTimeout(() => {
                     document.getElementById("bugLogo").removeAttribute("poster");
                 },2000);

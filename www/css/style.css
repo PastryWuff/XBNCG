@@ -46,7 +46,7 @@ iframe {
 
     filter: saturate(1.7);
 }
-#swoosh {
+#swooshLoop {
     position: absolute;
     z-index: 0;
     margin: 0px;
@@ -63,7 +63,24 @@ iframe {
 
     overflow: hidden;
 
-    filter: brightness(1.2);
+    opacity: 0;
+}
+#swooshFast {
+    position: absolute;
+    z-index: 1;
+    margin: 0px;
+    padding: 0px;
+
+    width: 100vw;
+    height: auto;
+
+    bottom: 0px;
+
+    background: transparent;
+
+    border: none;
+
+    overflow: hidden;
 }
 #error {
     position: absolute;
