@@ -21,8 +21,10 @@
     </head>
     <body>
         <div id="error"></div>
-        <video id="swooshFast" autoplay muted playsinline></video>
-        <video id="swooshLoop" autoplay muted playsinline loop></video>
+        <div class="swooshContainer">
+            <video id="swooshFast" autoplay muted playsinline></video>
+            <video id="swooshLoop" autoplay muted playsinline loop></video>
+        </div>
         <video id="bugLogo" autoplay muted playsinline></video>
         <iframe id="gfx" src="template/template.html" style="margin-left: 50px;"></iframe>
         <script src="js/socket.io.min.js"></script>
